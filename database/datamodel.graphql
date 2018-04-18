@@ -1,0 +1,33 @@
+type Post {
+  id: ID! @unique
+  isPublished: Boolean! @default(value: false)
+  title: String!
+  text: String!
+}
+
+type Fn {
+  id: ID! @unique
+  name: String! @unique
+  versions: [Version!]! @relation(name: "FnVersions")
+}
+
+type Version {
+  id: ID! @unique
+  fn: Fn! @relation(name: "FnVersions")
+  number: String! @unique
+  main: File @relation(name: "VersionMainFile")
+  trainData: File @relation(name: "VersionTrainDataFile")
+}
+
+type File {
+  id: ID! @unique
+  name: String!
+  size: Int!
+  secret: String! @unique
+  contentType: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String! @unique
+  versionMain: Version @relation(name: "VersionMainFile")
+  versionTrainData: Version @relation(name: "VersionTrainDataFile")
+}
